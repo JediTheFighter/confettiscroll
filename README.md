@@ -2,6 +2,15 @@
 
 An immersive Android application built with Jetpack Compose that showcases animated confetti effects and scrolling image galleries with an anime theme.
 
+## 📱 Demo
+
+### Screenshots
+
+<div align="center">
+  <img src="screenshots/phone_view.jpg" alt="Phone Screen" width="300"/>
+  <img src="screenshots/tablet_view.jpg" alt="Tablet Screen" width="300"/>
+</div>
+
 ## 🌟 Features
 
 ### Core Components

@@ -267,7 +267,7 @@ private fun MainContent() {
     Box(
         modifier = Modifier
             .fillMaxSize()
-            .padding(start = horizontalPadding, end = 140.dp)
+            .padding(start = horizontalPadding, end = if(isTablet) 380.dp else 140.dp)
             .padding(vertical = 32.dp)
     ) {
         // Translucent black background wrapper
