@@ -7,8 +7,8 @@ An immersive Android application built with Jetpack Compose that showcases anima
 ### Screenshots
 
 <div align="center">
-  <img src="screenshots/phone_view.jpg" alt="Phone Screen" width="300"/>
-  <img src="screenshots/tablet_view.jpg" alt="Tablet Screen" width="300"/>
+  <img src="screenshots/phone_view.jpg" alt="Phone Screen" width="300", height="500"/>
+  <img src="screenshots/tablet_view.jpg" alt="Tablet Screen" width="800" height="500"/>
 </div>
 
 ## 🌟 Features
@@ -61,11 +61,6 @@ Implements sophisticated confetti system:
 - Customizable particle count and colors
 - Physics-based fall simulation with rotation
 - Continuous looping animation
-
-**Key Data Classes:**
-- `ConfettiParticle`: Basic particle properties (position, color, size, rotation)
-- `EnhancedConfettiParticle`: Extended particle with shape and sway properties
-- `ConfettiShape`: Enum defining available particle shapes
 
 #### 3. Animation Systems
 
