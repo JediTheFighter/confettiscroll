@@ -46,17 +46,12 @@ The main screen component that orchestrates the entire UI:
 
 #### 2. InfiniteConfetty.kt (Confetti Animation System)
 
-Implements two sophisticated confetti systems:
+Implements sophisticated confetti system:
 
-**Basic Confetti (`InfiniteConfettiScroll`)**:
+**Confetti (`InfiniteConfetti`)**:
 - Customizable particle count and colors
 - Physics-based fall simulation with rotation
 - Continuous looping animation
-
-**Enhanced Confetti (`EnhancedConfettiScroll`)**:
-- Multiple particle shapes (Rectangle, Circle, Triangle, Star)
-- Horizontal sway motion using sine waves
-- Advanced particle physics with varying speeds
 
 **Key Data Classes:**
 - `ConfettiParticle`: Basic particle properties (position, color, size, rotation)
