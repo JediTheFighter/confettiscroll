@@ -7,7 +7,7 @@ An immersive Android application built with Jetpack Compose that showcases anima
 ### Screenshots
 
 <div align="center">
-  <img src="screenshots/phone_view.jpg" alt="Phone Screen" width="300", height="500"/>
+  <img src="screenshots/phone_view.jpg" alt="Phone Screen" width="300", height="800"/>
   <img src="screenshots/tablet_view.jpg" alt="Tablet Screen" width="800" height="500"/>
 </div>
 
