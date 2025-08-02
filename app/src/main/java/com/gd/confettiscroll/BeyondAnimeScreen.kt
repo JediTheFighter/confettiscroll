@@ -3,7 +3,9 @@ package com.gd.confettiscroll
 import android.annotation.SuppressLint
 import androidx.compose.animation.core.*
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
@@ -18,7 +20,6 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
-import kotlin.math.*
 
 
 @Composable
@@ -31,8 +32,8 @@ fun BeyondAnimeScreen(
             .background(Color(0xFF1A1A2E))
     ) {
         // Background confetti
-        InfiniteConfettiScroll(
-            confettiCount = 40,
+        InfiniteConfetti(
+            confettiCount = 60,
             scrollSpeed = 30f,
             confettiColors = listOf(
                 Color(0xFF4FC3F7),
@@ -57,48 +58,58 @@ private fun ScrollingImageTracks() {
     val screenWidth = configuration.screenWidthDp.dp
     val isTablet = screenWidth > 600.dp
 
-    val trackWidth = if (isTablet) 100.dp else 80.dp
-    val sideOffset = if (isTablet) 24.dp else 16.dp
+    val trackWidth = if (isTablet) 80.dp else 60.dp
+    val trackSpacing = if (isTablet) 30.dp else 25.dp
 
-    // Left track - scrolling up
-    ScrollingImageTrack(
-        images = leftTrackImages,
-        modifier = Modifier
-            .width(trackWidth)
-            .fillMaxHeight()
-            .offset(x = sideOffset),
-        scrollDirection = ScrollDirection.Up,
-        speed = 50f
-    )
-
-    // Right track - scrolling up (positioned from right edge)
     Box(
         modifier = Modifier
             .fillMaxSize()
-            .padding(end = sideOffset)
+            .padding(end = 20.dp)
     ) {
+        // First track (rightmost)
         ScrollingImageTrack(
             images = rightTrackImages,
             modifier = Modifier
                 .width(trackWidth)
                 .fillMaxHeight()
-                .align(Alignment.TopEnd),
+                .align(Alignment.TopEnd)
+                .graphicsLayer {
+                    rotationZ = 30f
+                    transformOrigin = TransformOrigin(0.5f, 0.5f)
+                },
             scrollDirection = ScrollDirection.Up,
-            speed = 40f
+            speed = 60f
         )
-    }
 
-    // Center track - scrolling down
-    Box(
-        modifier = Modifier.fillMaxSize()
-    ) {
+        // Second track (middle)
         ScrollingImageTrack(
             images = centerTrackImages,
             modifier = Modifier
                 .width(trackWidth)
                 .fillMaxHeight()
-                .align(Alignment.TopCenter),
+                .align(Alignment.TopEnd)
+                .offset(x = -trackSpacing * 3)
+                .graphicsLayer {
+                    rotationZ = 30f
+                    transformOrigin = TransformOrigin(0.5f, 0.5f)
+                },
             scrollDirection = ScrollDirection.Down,
+            speed = 40f
+        )
+
+        // Third track (leftmost of the three)
+        ScrollingImageTrack(
+            images = leftTrackImages,
+            modifier = Modifier
+                .width(trackWidth)
+                .fillMaxHeight()
+                .align(Alignment.TopEnd)
+                .offset(x = -trackSpacing * 6)
+                .graphicsLayer {
+                    rotationZ = 30f
+                    transformOrigin = TransformOrigin(0.5f, 0.5f)
+                },
+            scrollDirection = ScrollDirection.Up,
             speed = 60f
         )
     }
@@ -193,28 +204,50 @@ private fun AnimeImageCard(
             modifier = Modifier
                 .fillMaxSize()
                 .background(
-                    Brush.verticalGradient(
+                    Brush.radialGradient(
                         colors = listOf(
-                            Color(0xFF4FC3F7).copy(alpha = 0.3f),
-                            Color(0xFF1976D2).copy(alpha = 0.7f)
-                        )
+                            Color.White.copy(alpha = 0.2f),
+                            Color.White.copy(alpha = 0.1f),
+                            Color.White.copy(alpha = 0.05f)
+                        ),
+                        radius = 300f
                     )
+                ).border(
+                    width = 2.dp,
+                    color = Color.White.copy(alpha = 0.4f),
+                    shape = RoundedCornerShape(16.dp)
                 ),
             contentAlignment = Alignment.Center
         ) {
-            // Placeholder for anime character
-            Text(
-                text = "🎭",
-                fontSize = 40.sp,
-                color = Color.White
-            )
+            // Placeholder for anime character with glass backdrop
+            Box(
+                modifier = Modifier
+                    .size(50.dp)
+                    .background(
+                        Color.White.copy(alpha = 0.1f),
+                        shape = CircleShape
+                    ),
+                contentAlignment = Alignment.Center
+            ) {
+                Text(
+                    text = "🎭",
+                    fontSize = 28.sp,
+                    color = Color.White
+                )
+            }
 
-            // In real app, use AsyncImage or similar:
              AsyncImage(
                  model = imageUrl,
                  contentDescription = null,
                  modifier = Modifier.fillMaxSize(),
                  contentScale = ContentScale.Crop
+             )
+
+            //Overlay for glass effect over real images
+             Box(
+                 modifier = Modifier
+                     .fillMaxSize()
+                     .background(Color.White.copy(alpha = 0.1f))
              )
         }
     }
@@ -226,77 +259,92 @@ private fun MainContent() {
     val screenWidth = configuration.screenWidthDp.dp
     val isTablet = screenWidth > 600.dp
 
-    val horizontalPadding = if (isTablet) 140.dp else 110.dp
+    val horizontalPadding = if (isTablet) 32.dp else 24.dp
     val titleFontSize = if (isTablet) 40.sp else 32.sp
     val bodyFontSize = if (isTablet) 16.sp else 14.sp
 
-    Column(
+    // Content positioned on the left side with translucent black wrapper
+    Box(
         modifier = Modifier
             .fillMaxSize()
-            .padding(horizontal = horizontalPadding)
-            .padding(vertical = 32.dp),
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.Center
+            .padding(start = horizontalPadding, end = 140.dp)
+            .padding(vertical = 32.dp)
     ) {
-        // Main title with gradient effect
+        // Translucent black background wrapper
         Box(
             modifier = Modifier
+                .align(Alignment.Center)
                 .background(
-                    Brush.horizontalGradient(
-                        colors = listOf(
-                            Color(0xFF4FC3F7),
-                            Color(0xFF81C784)
-                        )
-                    ),
-                    shape = RoundedCornerShape(8.dp)
+                    Color.Black.copy(alpha = 0.4f),
+                    shape = RoundedCornerShape(16.dp)
                 )
-                .padding(horizontal = 16.dp, vertical = 8.dp)
+                .padding(24.dp)
         ) {
-            Text(
-                text = "Beyond Anime",
-                style = MaterialTheme.typography.headlineLarge.copy(
-                    fontSize = titleFontSize,
-                    fontWeight = FontWeight.Bold
-                ),
-                color = Color.White
-            )
-        }
+            Column(
+                horizontalAlignment = Alignment.Start,
+                verticalArrangement = Arrangement.Center
+            ) {
+                // Main title with gradient effect
+                Box(
+                    modifier = Modifier
+                        .background(
+                            Brush.horizontalGradient(
+                                colors = listOf(
+                                    Color(0xFF4FC3F7),
+                                    Color(0xFF81C784)
+                                )
+                            ),
+                            shape = RoundedCornerShape(8.dp)
+                        )
+                        .padding(horizontal = 16.dp, vertical = 8.dp)
+                ) {
+                    Text(
+                        text = "Beyond Anime",
+                        style = MaterialTheme.typography.headlineLarge.copy(
+                            fontSize = titleFontSize,
+                            fontWeight = FontWeight.Bold
+                        ),
+                        color = Color.White
+                    )
+                }
 
-        Spacer(modifier = Modifier.height(20.dp))
+                Spacer(modifier = Modifier.height(20.dp))
 
-        // Description text with better mobile formatting
-        Text(
-            text = "Explore a universe where every story comes to life, from epic battles to heartfelt journeys. Discover anime series and movies that ignite your imagination and leave a lasting impact.",
-            style = MaterialTheme.typography.bodyLarge.copy(
-                fontSize = bodyFontSize,
-                lineHeight = (bodyFontSize.value * 1.5).sp
-            ),
-            color = Color.White.copy(alpha = 0.9f),
-            textAlign = TextAlign.Center,
-            modifier = Modifier.padding(horizontal = 8.dp)
-        )
+                // Description text with left alignment
+                Text(
+                    text = "Explore a universe where every story comes to life, from epic battles to heartfelt journeys. Discover anime series and movies that ignite your imagination and leave a lasting impact.",
+                    style = MaterialTheme.typography.bodyLarge.copy(
+                        fontSize = bodyFontSize,
+                        lineHeight = (bodyFontSize.value * 1.5).sp
+                    ),
+                    color = Color.White.copy(alpha = 0.9f),
+                    textAlign = TextAlign.Start,
+                    modifier = Modifier.padding(end = 16.dp)
+                )
 
-        Spacer(modifier = Modifier.height(28.dp))
+                Spacer(modifier = Modifier.height(28.dp))
 
-        // Get Started button
-        Button(
-            onClick = { /* Handle click */ },
-            modifier = Modifier
-                .height(if (isTablet) 56.dp else 48.dp)
-                .widthIn(min = if (isTablet) 200.dp else 160.dp),
-            colors = ButtonDefaults.buttonColors(
-                containerColor = Color(0xFF4CAF50)
-            ),
-            shape = RoundedCornerShape(24.dp)
-        ) {
-            Text(
-                text = "Get Started",
-                style = MaterialTheme.typography.titleMedium.copy(
-                    fontWeight = FontWeight.SemiBold,
-                    fontSize = if (isTablet) 16.sp else 14.sp
-                ),
-                color = Color.White
-            )
+                // Get Started button
+                Button(
+                    onClick = { /* Handle click */ },
+                    modifier = Modifier
+                        .height(if (isTablet) 56.dp else 48.dp)
+                        .widthIn(min = if (isTablet) 200.dp else 160.dp),
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = Color(0xFF4CAF50)
+                    ),
+                    shape = RoundedCornerShape(24.dp)
+                ) {
+                    Text(
+                        text = "Get Started",
+                        style = MaterialTheme.typography.titleMedium.copy(
+                            fontWeight = FontWeight.SemiBold,
+                            fontSize = if (isTablet) 16.sp else 14.sp
+                        ),
+                        color = Color.White
+                    )
+                }
+            }
         }
     }
 }
